@@ -63,7 +63,7 @@ case "$target" in
 		echo "Failed to build target $target."
 	else
 		llvm-strip --strip-all "./target/${target}/${build_out_dir}/${package_name}.exe"
-		cp "./target/${target}/${build_out_dir}/${package_name}.exe" "${DIST_BUILD_DIR}/${target}.exe"
+		cp "./target/${target}/${build_out_dir}/${package_name}.exe" "${DIST_BUILD_DIR}/${package_name}-${target}.exe"
 	fi
 	;;
 *redox*)
@@ -72,7 +72,7 @@ case "$target" in
 		echo "Failed to build target $target."
 	else
 		llvm-strip --strip-all "./target/${target}/${build_out_dir}/${package_name}"
-		cp "./target/${target}/${build_out_dir}/${package_name}" "${DIST_BUILD_DIR}/${target}"
+		cp "./target/${target}/${build_out_dir}/${package_name}" "${DIST_BUILD_DIR}/${package_name}-${target}"
 	fi
 	;;
 *)
@@ -115,7 +115,7 @@ case "$target" in
 		echo "Failed to build target $target."
 	else
 		llvm-strip --strip-all "$package_out"
-		cp "$package_out" "${DIST_BUILD_DIR}/${target}${binary_extension}"
+		cp "$package_out" "${DIST_BUILD_DIR}/${package_name}-${target}${binary_extension}"
 	fi
 	;;
 esac

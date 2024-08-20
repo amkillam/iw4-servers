@@ -4,8 +4,6 @@ rustflags = [
   "target-cpu=generic",
   "-C",
   "opt-level=3",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--strip-all",
@@ -18,8 +16,6 @@ rustflags = [
   "target-cpu=generic",
   "-C",
   "opt-level=3",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-Zlocation-detail=none",
 ]
@@ -28,8 +24,6 @@ rustflags = [
 rustflags = [
   "-C",
   "target-cpu=generic",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
@@ -40,8 +34,6 @@ rustflags = [
 rustflags = [
   "-C",
   "target-cpu=generic",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
@@ -52,12 +44,10 @@ rustflags = [
 rustflags = [
   "-C",
   "target-cpu=generic",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now,-static",
-  "-Zloc`ation-detail=none",
+  "-Zlocation-detail=none",
 ]
 
 [target.'cfg(all(target_os = "windows", target_arch = "x86_64"))']
@@ -65,8 +55,6 @@ rustflags = [
   "-Ctarget-feature=+crt-static",
   "-C",
   "target-cpu=generic",
-  "-Z",
-  "threads=0",
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now,-static",

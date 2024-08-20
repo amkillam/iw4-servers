@@ -20,9 +20,9 @@ iw4-servers [OPTIONS]
 Options:
   -o, --output <OUTPUT>  Output file for server list [default: favourites.json]
   -g, --game <GAME>      Game to get server list for. Options: COD, H1, H2M, IW3, IW4, IW5, IW6, L4D2, SHG1, T4, T5, T6, T7 [default: H2M]
-  -u, --uri <URI>        IW4 server list URL [default: https://master.iw4.zip/servers]
+  -u, --uri <URI>        IW4 server list URI [default: https://master.iw4.zip/servers]
   -h, --help             Print help
-  -V, --version          Print version
-  ```
+  -V, --version          Print version  
+```
 
 

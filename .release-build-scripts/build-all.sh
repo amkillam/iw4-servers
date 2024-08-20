@@ -11,8 +11,9 @@ fi
 if [ -z $release_targets_filter ]; then
 	wasm_filters='wasm\|asmjs\|emscripten\|wasi\|memory64\|function-references'
 	no_std_filters='i586-pc-nto-qnx700\|powerpc-unknown-openbsd\|mipsel-sony-ps\|-none\$\|none-softfloat\|none-elf\|none-eabi\|uefi\|cuda\|nintendo-switch\|atmega328\|mipsisa\|nuttx'
+	special_sdk_filters='apple-ios\|apple-visionos\|apple-tvos'
 	#	other_known_broken_filters='' # TODO
-	release_targets_filter="$wasm_filters\|$no_std_filters"
+	release_targets_filter="$wasm_filters\|$no_std_filters\|$special_sdk_filters"
 fi
 
 script_dir="$(dirname $0)"
