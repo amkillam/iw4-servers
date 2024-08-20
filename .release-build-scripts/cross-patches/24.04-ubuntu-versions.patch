@@ -1,0 +1,104 @@
+diff --git a/docker/Dockerfile.aarch64-apple-darwin-cross b/docker/Dockerfile.aarch64-apple-darwin-cross
+index f4593b0..6dcbd13 100644
+--- a/docker/Dockerfile.aarch64-apple-darwin-cross
++++ b/docker/Dockerfile.aarch64-apple-darwin-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.aarch64-apple-ios-cross b/docker/Dockerfile.aarch64-apple-ios-cross
+index b26ff2e..732238d 100644
+--- a/docker/Dockerfile.aarch64-apple-ios-cross
++++ b/docker/Dockerfile.aarch64-apple-ios-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.aarch64-pc-windows-msvc-cross b/docker/Dockerfile.aarch64-pc-windows-msvc-cross
+index fe959f2..f8fc3f8 100644
+--- a/docker/Dockerfile.aarch64-pc-windows-msvc-cross
++++ b/docker/Dockerfile.aarch64-pc-windows-msvc-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.i686-apple-darwin-cross b/docker/Dockerfile.i686-apple-darwin-cross
+index e151090..76c66b8 100644
+--- a/docker/Dockerfile.i686-apple-darwin-cross
++++ b/docker/Dockerfile.i686-apple-darwin-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.i686-pc-windows-msvc-cross b/docker/Dockerfile.i686-pc-windows-msvc-cross
+index acee6e6..0077b7c 100644
+--- a/docker/Dockerfile.i686-pc-windows-msvc-cross
++++ b/docker/Dockerfile.i686-pc-windows-msvc-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.thumbv7a-pc-windows-msvc-cross b/docker/Dockerfile.thumbv7a-pc-windows-msvc-cross
+index 4333cb0..aeb1c9c 100644
+--- a/docker/Dockerfile.thumbv7a-pc-windows-msvc-cross
++++ b/docker/Dockerfile.thumbv7a-pc-windows-msvc-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.thumbv7neon-unknown-linux-musleabihf-cross b/docker/Dockerfile.thumbv7neon-unknown-linux-musleabihf-cross
+index 82e840d..62af301 100644
+--- a/docker/Dockerfile.thumbv7neon-unknown-linux-musleabihf-cross
++++ b/docker/Dockerfile.thumbv7neon-unknown-linux-musleabihf-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.x86_64-apple-darwin-cross b/docker/Dockerfile.x86_64-apple-darwin-cross
+index dc8c317..f39d937 100644
+--- a/docker/Dockerfile.x86_64-apple-darwin-cross
++++ b/docker/Dockerfile.x86_64-apple-darwin-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/Dockerfile.x86_64-pc-windows-msvc-cross b/docker/Dockerfile.x86_64-pc-windows-msvc-cross
+index 5bf8832..1f017d0 100644
+--- a/docker/Dockerfile.x86_64-pc-windows-msvc-cross
++++ b/docker/Dockerfile.x86_64-pc-windows-msvc-cross
+@@ -1,4 +1,4 @@
+-FROM ubuntu:20.04
++FROM ubuntu:24.04
+ ARG DEBIAN_FRONTEND=noninteractive
+ 
+ COPY common.sh lib.sh /
+diff --git a/docker/darwin.sh b/docker/darwin.sh
+index 4236e24..f173598 100755
+--- a/docker/darwin.sh
++++ b/docker/darwin.sh
+@@ -20,7 +20,8 @@ main() {
+         make \
+         patch \
+         xz-utils \
+-        python
++        python3
++    ln -s /usr/bin/python3 /usr/bin/python
+ 
+     apt-get update
+     apt-get install --assume-yes --no-install-recommends clang \

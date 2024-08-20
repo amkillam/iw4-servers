@@ -1,0 +1,74 @@
+[build]
+rustflags = [
+  "-C",
+  "target-cpu=generic",
+  "-C",
+  "opt-level=3",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-C",
+  "link-arg=-Wl,-O3,--strip-all",
+  "-Zlocation-detail=none",
+]
+
+[target.'cfg(target_os = "macos")']
+rustflags = [
+  "-C",
+  "target-cpu=generic",
+  "-C",
+  "opt-level=3",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+]
+
+[target.'cfg(not(any(target_os = "windows", target_family = "wasm", target_arch = "x86_64", target_os = "macos", target_arch = "aarch64")))']
+rustflags = [
+  "-C",
+  "target-cpu=generic",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-C",
+  "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
+  "-Zlocation-detail=none",
+]
+
+[target.'cfg(all(not(target_os = "windows"), not(target_family = "wasm"), target_arch = "x86_64", not(target_os = "macos")))']
+rustflags = [
+  "-C",
+  "target-cpu=generic",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-C",
+  "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
+  "-Zlocation-detail=none",
+]
+
+[target.'cfg(all(target_os = "windows", not(target_arch = "x86_64")))']
+rustflags = [
+  "-C",
+  "target-cpu=generic",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-C",
+  "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now,-static",
+  "-Zloc`ation-detail=none",
+]
+
+[target.'cfg(all(target_os = "windows", target_arch = "x86_64"))']
+rustflags = [
+  "-Ctarget-feature=+crt-static",
+  "-C",
+  "target-cpu=generic",
+  "-Z",
+  "threads=0",
+  "-Zshare-generics=y",
+  "-C",
+  "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now,-static",
+  "-Zlocation-detail=none",
+]
