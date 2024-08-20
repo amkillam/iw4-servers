@@ -9,7 +9,7 @@ rustflags = [
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--strip-all",
-  # "-Zlocation-detail=none",
+  "-Zlocation-detail=none",
 ]
 
 [target.'cfg(target_os = "macos")']
@@ -45,7 +45,7 @@ rustflags = [
   "-Zshare-generics=y",
   "-C",
   "link-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
-  #"-Zlocation-detail=none",
+  "-Zlocation-detail=none",
 ]
 
 [target.'cfg(all(target_os = "windows", not(target_arch = "x86_64")))']
