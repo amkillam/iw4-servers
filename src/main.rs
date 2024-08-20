@@ -136,6 +136,9 @@ fn parse_sever_strings(response_body: &str, game: &Iw4Game) -> Vec<String> {
         .collect::<Vec<String>>()
 }
 
+// Currently, separating this into its own function is simply unnecessary, due to its length being
+// only one line. The additional function call is also inefficient. However, for future
+// scalability, i.e. handling of more cases, this function is kept separate.
 fn format_output(server_strings: Vec<String>) -> String {
     "[\n".to_string() + &server_strings.join(",\n") + "\n]\n"
 }
