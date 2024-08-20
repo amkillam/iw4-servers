@@ -1,5 +1,5 @@
 [package]
-name = "iw4-servers-tool"
+name = "iw4-servers"
 version = "0.1.0"
 edition = "2021"
 
