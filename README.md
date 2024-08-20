@@ -1,4 +1,4 @@
-# Project Title
+# iw4-servers
 
 A simple tool to parse an IW4 master server list and output to a JSON file. This will most commonly be useful for generating a favourites.json file to be used with an H2M-Mod binary that has not had its master server URL patched.
 
