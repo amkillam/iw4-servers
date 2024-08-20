@@ -29,12 +29,6 @@ else
 	git pull
 fi
 
-cd docker/cross-toolchains
-for patch in ../../../../build-scripts/cross-patches/*.patch; do
-	git apply "$patch"
-done
-cd ../..
-
 declare -A apple_sdk_urls
 apple_sdk_urls=(
 	["aarch64-apple-darwin"]=https://github.com/joseluisq/macosx-sdks/releases/download/12.3/MacOSX12.3.sdk.tar.xz

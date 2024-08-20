@@ -1,5 +1,10 @@
 use clap::Parser;
-use std::path::PathBuf;
+use std::{
+    io::{Read, Write},
+    net::TcpStream,
+    path::PathBuf,
+    sync::Arc,
+};
 
 //Note - enum argument parsing is case-insensitive. https://master.iw4.zip/servers uses all
 //uppercase letters for each of these enum options, so these will still work, while keeping with
@@ -75,9 +80,9 @@ struct Args {
     #[clap(short, long, default_value = "H2M")]
     game: Iw4Game,
 
-    /// IW4 server list URL.
+    /// IW4 server list URI.
     #[clap(short, long, default_value = "https://master.iw4.zip/servers")]
-    url: String,
+    uri: ParsedUri,
 }
 
 macro_rules! some_or_false {
@@ -144,25 +149,151 @@ fn parse_server_strings(response_body: &str, game: &Iw4Game) -> Vec<String> {
 // Currently, separating this into its own function is simply unnecessary, due to its length being
 // only one line. The additional function call is also inefficient. However, for future
 // scalability, i.e. handling of more cases, this function is kept separate.
-fn format_output(server_strings: Vec<String>) -> String {
+fn format_output(server_strings: &[String]) -> String {
     "[\n".to_string() + &server_strings.join(",\n") + "\n]\n"
+}
+
+#[derive(Clone, Default)]
+struct ParsedUri {
+    domain: String,
+    port: String,
+    path: Vec<String>,
+    query: String,
+}
+
+impl ParsedUri {
+    pub fn to_string(&self) -> String {
+        let path = self.path.join("/");
+        let query = if self.query.is_empty() {
+            "".to_string()
+        } else {
+            "?".to_string() + self.query.as_str()
+        };
+
+        format!("{}:{}/{}{}", self.domain, self.port, path, query)
+    }
+}
+
+impl std::fmt::Display for ParsedUri {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_string())
+    }
+}
+
+impl From<&str> for ParsedUri {
+    fn from(uri: &str) -> Self {
+        let (prefix, remainder) = uri.split_once("://").unwrap_or(("http://", uri));
+
+        if !prefix.contains("http") {
+            panic!(
+                "Protocol not supported! Only HTTP and HTTPS are supported. Prefix: {}",
+                prefix
+            );
+        }
+
+        let first_slash_index = remainder.find('/').unwrap_or(remainder.len());
+        let first_colon_index = remainder.find(':').unwrap_or(remainder.len());
+
+        let (port, remainder) = if first_colon_index < first_slash_index {
+            remainder.split_once('/').unwrap_or((remainder, ""))
+        } else {
+            ("443", remainder)
+        };
+
+        let (remainder, query) = remainder.split_once('?').unwrap_or((remainder, ""));
+
+        let mut domain_path = remainder
+            .split('/')
+            .filter(|s| !s.is_empty())
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>();
+
+        let path = domain_path.split_off(1);
+        let domain = std::mem::take(&mut domain_path[0]);
+
+        ParsedUri {
+            domain,
+            port: port.to_string(),
+            path,
+            query: query.to_string(),
+        }
+    }
+}
+
+fn request_server_list(uri: &ParsedUri) -> String {
+    let root_store = rustls::RootCertStore {
+        roots: webpki_roots::TLS_SERVER_ROOTS.into(),
+    };
+
+    //rustls_rustcrypto is an incomplete provider, and its security and correctness have not been formally verified nor
+    //certified. However, in this case, it is functionally sufficient, and its security is of no
+    //consequence, as only public server lists are intended to be accessed with this tool.
+    //
+    //Additionally, using rustls_rustcrypto allows compilation for additional build targets which
+    //would usually break due to unusual requirements for their C compilation environments;
+    //rustls_rustcrypto, as a result of being a pure rust implementation, does not share these
+    //unusual compilation requirements.
+    let provider = Arc::new(rustls_rustcrypto::provider());
+
+    let mut config = rustls::ClientConfig::builder_with_provider(provider)
+        .with_safe_default_protocol_versions()
+        .unwrap_or_else(|e| {
+            panic!(
+                "Failed to set default TLS protocol versions! Error: {:?}",
+                e
+            )
+        })
+        .with_root_certificates(root_store)
+        .with_no_client_auth();
+
+    // Allow using SSLKEYLOGFILE.
+    config.key_log = Arc::new(rustls::KeyLogFile::new());
+
+    let server_name_borrowed: rustls::pki_types::ServerName =
+        uri.domain.as_str().try_into().unwrap_or_else(|e| {
+            panic!("Failed to parse ServerName from url! Error: {:?}", e);
+        });
+
+    let server_name = server_name_borrowed.to_owned();
+    let mut conn =
+        rustls::ClientConnection::new(Arc::new(config), server_name).unwrap_or_else(|e| {
+            panic!("Failed to create rustls::ClientConnection! Error: {:?}", e);
+        });
+
+    let mut sock = TcpStream::connect(format!("{}:{}", uri.domain, uri.port)).unwrap_or_else(|e| {
+        panic!("Failed to connect to server! Error: {:?}", e);
+    });
+    let mut tls = rustls::Stream::new(&mut conn, &mut sock);
+    tls.write_all(
+        ("GET /".to_string()
+            + uri.path.join("/").as_str()
+            + " "
+            + "HTTP/1.0"
+            + "\r\n"
+            + "Host: "
+            + uri.domain.as_str()
+            + "\r\n"
+            + "Accept: */*\r\n"
+            + "\r\n")
+            .as_bytes(),
+    )
+    .unwrap();
+    let mut response_bytes = Vec::new();
+    tls.read_to_end(&mut response_bytes).unwrap();
+
+    std::str::from_utf8(response_bytes.as_slice())
+        .unwrap_or_else(|_| {
+            panic!("Failed to parse response from {}", uri);
+        })
+        .to_string()
 }
 
 fn main() {
     let args = Args::parse();
 
-    let response_body: String = ureq::get(args.url.as_str())
-        .call()
-        .unwrap_or_else(|_| {
-            panic!("Failed to get server list from {}", args.url.as_str());
-        })
-        .into_string()
-        .unwrap_or_else(|_| {
-            panic!("Failed to parse response from {}", args.url.as_str());
-        });
-
-    let server_strings = parse_server_strings(&response_body, &args.game);
-    let out_string = format_output(server_strings);
+    let response_body = request_server_list(&args.uri);
+    let server_strings = parse_server_strings(response_body.as_str(), &args.game);
+    let out_string = format_output(server_strings.as_slice());
 
     std::fs::write(&args.output, out_string).unwrap_or_else(|_| {
         panic!("Failed to write to file {}", args.output.display());
@@ -204,7 +335,7 @@ mod tests {
             ]
         );
 
-        let formatted_output = format_output(server_strings);
+        let formatted_output = format_output(server_strings.as_slice());
         assert_eq!(
             formatted_output,
             "[\n    \"0.0.0.0:28960\",\n    \"0.0.0.1:28961\",\n    \"0.0.0.2:28962\"\n]\n"
