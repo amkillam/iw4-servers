@@ -12,7 +12,7 @@ A simple tool to parse an IW4 master server list and output to a JSON file. This
 
 ## Usage
 
-Usage documentation, copied directly from the output of the command `iw4-servers-tool --help`, is provided below. Upon the outputted favourites.json file's placement in the intended game's root directory, servers listed in the file are then made available in the game's server browser, under the Favorites section.
+Usage documentation, copied directly from the output of the command `iw4-servers --help`, is provided below. Upon the outputted favourites.json file's placement in the intended game's root directory, servers listed in the file are then made available in the game's server browser, under the Favorites section.
 
 ```
 iw4-servers [OPTIONS]
