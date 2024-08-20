@@ -89,7 +89,7 @@ macro_rules! some_or_false {
     };
 }
 
-fn parse_sever_strings(response_body: &str, game: &Iw4Game) -> Vec<String> {
+fn parse_server_strings(response_body: &str, game: &Iw4Game) -> Vec<String> {
     let game_html_id = game.as_html_id();
 
     let dom = tl::parse(response_body, tl::ParserOptions::default()).unwrap();
@@ -129,6 +129,11 @@ fn parse_sever_strings(response_body: &str, game: &Iw4Game) -> Vec<String> {
         .filter_map(|child_handle| {
             let child = child_handle.get(parser)?;
             let tag = child.as_tag()?;
+            let attributes = tag.attributes();
+
+            if attributes.class()?.try_as_utf8_str() != Some("server-row") {
+                return None;
+            }
             let ip = tag.attributes().get("data-ip")??.try_as_utf8_str()?;
             let port = tag.attributes().get("data-port")??.try_as_utf8_str()?;
             Some(format!("{}:{}", ip, port))
@@ -156,10 +161,49 @@ fn main() {
             panic!("Failed to parse response from {}", args.url.as_str());
         });
 
-    let server_strings = parse_sever_strings(&response_body, &args.game);
+    let server_strings = parse_server_strings(&response_body, &args.game);
     let out_string = format_output(server_strings);
 
     std::fs::write(&args.output, out_string).unwrap_or_else(|_| {
         panic!("Failed to write to file {}", args.output.display());
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn simple_test_all() {
+        let response_body = r#"
+<div>
+    <div id="Wrong ID">
+        <></>
+    </div>
+    <div id="H2M_servers">
+        <table>
+            <tbody>
+                <tr class = "server-row" data-ip="0.0.0.0" data-port="28960"></tr>
+                <tr class = "server-row" data-ip="0.0.0.1" data-port="28961"></tr>
+                <tr><p>Test</p></tr>
+                <tr class = "server-row" data-ip="0.0.0.2" data-port="28962"></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+"#;
+
+        let game = Iw4Game::H2m;
+        let server_strings = parse_server_strings(response_body, &game);
+        assert_eq!(
+            server_strings,
+            vec!["0.0.0.0:28960", "0.0.0.1:28961", "0.0.0.2:28962"]
+        );
+
+        let formatted_output = format_output(server_strings);
+        assert_eq!(
+            formatted_output,
+            "[\n0.0.0.0:28960,\n0.0.0.1:28961,\n0.0.0.2:28962\n]\n"
+        );
+    }
 }
