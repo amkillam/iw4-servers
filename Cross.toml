@@ -2,3 +2,7 @@
 image = "ghcr.io/cross-rs/aarch64-apple-ios-cross:local"
 [target.aarch64-apple-darwin]
 image = "ghcr.io/cross-rs/aarch64-apple-darwin-cross:local"
+[target.aarch64_be-unknown-linux-gnu]
+image = "ghcr.io/cross-rs/aarch64_be-unknown-linux-gnu-cross:local"
+[target.i686-apple-darwin]
+image = "ghcr.io/cross-rs/i686-apple-darwin-cross:local"

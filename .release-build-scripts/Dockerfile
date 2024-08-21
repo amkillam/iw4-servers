@@ -9,6 +9,7 @@ RUN apt-get install -y libfuse3-3 libfuse3-dev libfuse2 libfuse-dev clang
 RUN curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y
 RUN rustup update
 RUN rustup component add rust-src
-RUN cargo install cross xh wasm-bindgen-cli redoxer trunk wasm-opt cargo-xwin rust-script
+RUN cargo install --force --git https://github.com/cross-rs/cross cross
+RUN cargo install xh wasm-bindgen-cli redoxer trunk wasm-opt cargo-xwin rust-script
 
 RUN curl -fsSL https://get.docker.com | sh

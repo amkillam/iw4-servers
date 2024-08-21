@@ -90,22 +90,24 @@ case "$target" in
 		if [ ! -x "$cross_toolchain_generation_script" ]; then
 			chmod +x "$cross_toolchain_generation_script"
 		fi
-		if [ $(image_exists "ghcr.io/cross-rs/${toolchain}-cross:local") -eq 0 ]; then
+		if [ $(image_exists "ghcr.io/cross-rs/${toolchain}-cross:local") -eq 0 ] && [ $(image_exists "ghcr.io/cross-rs/${toolchain}:latest") -eq 0 ]; then
 			echo "Generating cross toolchain for target $target."
 			"$cross_toolchain_generation_script" "$target"
 		fi
 	fi
 
+	build_std="-Zbuild-std=std,core,alloc,panic_abort"
+
 	if [[ "$target" == *gnu* ]]; then
 		docker run -v /var/run/docker.sock:/var/run/docker.sock \
 			-v .:"$real_work_dir" \
 			-w "$real_work_dir" cargo-cross bash -c \
-			"CROSS_BUILD_ZIG=2.15 CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name -Zbuild-std=std,core,alloc,panic_abort"
+			"CROSS_BUILD_ZIG=2.15 CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
 	else
 		docker run -v /var/run/docker.sock:/var/run/docker.sock \
 			-v .:"$real_work_dir" \
 			-w "$real_work_dir" cargo-cross bash -c \
-			"CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name -Zbuild-std=std,core,alloc,panic_abort"
+			"CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
 	fi
 	package_out="./target/${target}/${build_out_dir}/${package_name}"
 	if [[ "$target" == *windows* ]]; then

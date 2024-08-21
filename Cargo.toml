@@ -29,7 +29,6 @@ debug = false
 debug-assertions = false
 
 [profile.release.package."*"]
-inherits = "release"
 opt-level = 3
 codegen-units = 1
 overflow-checks = false
