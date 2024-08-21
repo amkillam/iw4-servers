@@ -12,11 +12,11 @@ rustflags = [
   "-Zlocation-detail=none",
 ]
 
-[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64", target_arch = "i586"), target_family = "unix", not(target_os = "macos")))']
+[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64", target_arch = "i586", target_arch = "mips", target_arch = "mips64"), target_family = "unix", not(target_os = "macos")))']
 rustflags = [
   "-Zshare-generics=y",
   "-Copt-level=3",
-  "-Clink-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
+  "-Clink-arg=-Wl,-O3,--strip-all,--sort-common,--as-needed,-z,relro,-z,now",
   "-Zlocation-detail=none",
 ]
 

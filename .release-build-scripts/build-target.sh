@@ -58,7 +58,18 @@ mkdir -p "${DIST_BUILD_DIR}"
 
 case "$target" in
 *msvc*)
-	cargo xwin build --target ${target} --profile "$build_profile" -Zbuild-std=std,core,panic_abort --package $package_name
+	arch=$(echo $target | cut -d '-' -f 1)
+	xwin_arch="$arch"
+
+	if [[ "$arch" == "i586" ]]; then
+		echo "Warning: i586 is not supported by xwin."
+		xwin_arch="x86"
+	elif [[ "$arch" == "i686" ]]; then
+		xwin_arch="x86"
+	elif [[ "$arch" == "thumbv7a" ]]; then
+		xwin_arch="aarch"
+	fi
+	cargo xwin build --target ${target} --profile "$build_profile" -Zbuild-std=std,core,alloc,panic_abort --package $package_name --xwin-arch "$xwin_arch" --xwin-variant desktop
 	if [ $? -ne 0 ]; then
 		echo "Failed to build target $target."
 	else
@@ -98,7 +109,7 @@ case "$target" in
 
 	build_std="-Zbuild-std=std,core,alloc,panic_abort"
 	cross_build_zig=""
-	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]] && [[ "$target" != sparc* ]] && [[ "$target" != thumbv7neon* ]]; then
+	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]] && [[ "$target" != sparc* ]] && [[ "$target" != thumbv7neon* ]] && [[ "$target" != armeb* ]] && [[ "$target" != armv4t* ]]; then
 		cross_build_zig="CROSS_BUILD_ZIG=2.15 "
 	fi
 
