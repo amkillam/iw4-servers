@@ -12,13 +12,12 @@ if [ -z $release_targets_filter ]; then
 	wasm_filters='wasm\|asmjs\|emscripten\|wasi\|memory64\|function-references'
 	no_std_filters='i586-pc-nto-qnx700\|powerpc-unknown-openbsd\|mipsel-sony-ps\|-none$\|none-softfloat\|none-elf\|none-eabi\|uefi\|cuda\|nintendo-switch\|atmega328\|mipsisa\|nuttx'
 	special_sdk_filters='apple-ios\|apple-visionos\|apple-tvos\|apple-watchos'
-	extremely_obscure_os_filters='fuchsia\|solid_asp3\|qnx710\|illumos\|teeos\|vxworks\|hermit\|-ohos'
+	extremely_obscure_os_filters='fuchsia\|solid_asp3\|qnx710\|aarch64-unknown-illumos\|teeos\|vxworks\|riscv64gc-unknown-hermit\|-ohos'
 	extremely_obscure_platform_filters='unikraft'
 	extremely_obscure_arch_filters='bpfeb\|bpfel\|csky\|hexagon'
 	broken_std_filters='gnu_ilp32\|aarch64_be-unknown-linux-gnu\|i586-unknown-netbsd'
 	broken_cross_filters='arm-unknown-linux-gnueabi'
-	no_cargo_cross_and_uncommon_filters="aarch64-unknown-netbsd\|arm64e-apple-darwin\|arm64ec-pc-windows-msvc\|haiku"
-	#	other_known_broken_filters='' # TODO
+	no_cargo_cross_and_uncommon_filters="aarch64-unknown-netbsd\|aarch64_be-unknown-netbsd\|arm64e-apple-darwin\|arm64ec-pc-windows-msvc\|haiku"
 	release_targets_filter="$wasm_filters\|$no_std_filters\|$special_sdk_filters\|$extremely_obscure_os_filters\|$extremely_obscure_platform_filters\|$extremely_obscure_arch_filters\|$broken_std_filters\|$broken_cross_filters\|$no_cargo_cross_and_uncommon_filters"
 fi
 
