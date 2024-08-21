@@ -1,6 +1,0 @@
-[submodule "ureq"]
-	path = ureq
-	url = https://github.com/algesten/ureq.git
-[submodule "external/ureq"]
-	path = external/ureq
-	url = https://github.com/algesten/ureq.git
