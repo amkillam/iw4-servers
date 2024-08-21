@@ -6,3 +6,9 @@ image = "ghcr.io/cross-rs/aarch64-apple-darwin-cross:local"
 image = "ghcr.io/cross-rs/aarch64_be-unknown-linux-gnu-cross:local"
 [target.i686-apple-darwin]
 image = "ghcr.io/cross-rs/i686-apple-darwin-cross:local"
+[target.s390x-unknown-linux-gnu]
+image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
+[target.thumbv7neon-unknown-linux-musleabihf]
+image = "ghcr.io/cross-rs/thumbv7neon-unknown-linux-musleabihf-cross:local"
+[target.x86_64-apple-darwin]
+image = "ghcr.io/cross-rs/x86_64-apple-darwin-cross:local"

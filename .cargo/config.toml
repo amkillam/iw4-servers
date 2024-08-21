@@ -12,7 +12,7 @@ rustflags = [
   "-Zlocation-detail=none",
 ]
 
-[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64"), target_os = "linux"))']
+[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64", target_arch = "i586"), target_family = "unix", not(target_os = "macos")))']
 rustflags = [
   "-Zshare-generics=y",
   "-Copt-level=3",

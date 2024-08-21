@@ -98,7 +98,7 @@ case "$target" in
 
 	build_std="-Zbuild-std=std,core,alloc,panic_abort"
 	cross_build_zig=""
-	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]]; then
+	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]] && [[ "$target" != sparc* ]] && [[ "$target" != thumbv7neon* ]]; then
 		cross_build_zig="CROSS_BUILD_ZIG=2.15 "
 	fi
 

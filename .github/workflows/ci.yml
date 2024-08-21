@@ -14,8 +14,9 @@ jobs:
     strategy:
       matrix:
         toolchain:
-          - stable
-          - beta
+          # Only nightly CI enabled to allow .cargo/config.toml to use nightly-only Cargo features
+          # - stable
+          # - beta
           - nightly
     steps:
       - uses: actions/checkout@v3
