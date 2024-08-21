@@ -97,18 +97,16 @@ case "$target" in
 	fi
 
 	build_std="-Zbuild-std=std,core,alloc,panic_abort"
-
-	if [[ "$target" == *gnu* ]]; then
-		docker run -v /var/run/docker.sock:/var/run/docker.sock \
-			-v .:"$real_work_dir" \
-			-w "$real_work_dir" cargo-cross bash -c \
-			"CROSS_BUILD_ZIG=2.15 CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
-	else
-		docker run -v /var/run/docker.sock:/var/run/docker.sock \
-			-v .:"$real_work_dir" \
-			-w "$real_work_dir" cargo-cross bash -c \
-			"CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
+	cross_build_zig=""
+	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]]; then
+		cross_build_zig="CROSS_BUILD_ZIG=2.15 "
 	fi
+
+	docker run -v /var/run/docker.sock:/var/run/docker.sock \
+		-v .:"$real_work_dir" \
+		-w "$real_work_dir" cargo-cross bash -c \
+		"${cross_build_zig}CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
+
 	package_out="./target/${target}/${build_out_dir}/${package_name}"
 	if [[ "$target" == *windows* ]]; then
 		package_out="${package_out}.exe"
