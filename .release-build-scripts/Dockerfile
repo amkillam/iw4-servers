@@ -10,6 +10,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y
 RUN rustup update
 RUN rustup component add rust-src
 RUN cargo install --force --git https://github.com/cross-rs/cross cross
-RUN cargo install xh wasm-bindgen-cli redoxer trunk wasm-opt cargo-xwin rust-script
+RUN cargo install --force --git https://github.com/amkillam/redoxer redoxer
+RUN cargo install xh wasm-bindgen-cli trunk wasm-opt cargo-xwin rust-script
 
 RUN curl -fsSL https://get.docker.com | sh

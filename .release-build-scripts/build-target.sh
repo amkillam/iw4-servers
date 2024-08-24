@@ -69,7 +69,7 @@ case "$target" in
 	elif [[ "$arch" == "thumbv7a" ]]; then
 		xwin_arch="aarch"
 	fi
-	cargo xwin build --target ${target} --profile "$build_profile" -Zbuild-std=std,core,alloc,panic_abort --package $package_name --xwin-arch "$xwin_arch" --xwin-variant desktop
+	cargo xwin build --target "${target}" --profile "$build_profile" -Zbuild-std=std,core,alloc,panic_abort,compiler_builtins,proc_macro --package $package_name --xwin-arch "$xwin_arch" --xwin-variant desktop
 	if [ $? -ne 0 ]; then
 		echo "Failed to build target $target."
 	else
@@ -78,7 +78,9 @@ case "$target" in
 	fi
 	;;
 *redox*)
-	redoxer build --target ${target} --profile ${build_profile} --package $package_name -Zbuild-std=std,core,alloc,panic_abort
+	[[ "$(redoxer version 2>/dev/null)" != "0.2.44" ]] && cargo install --force --git https://github.com/amkillam/redoxer redoxer
+
+	TARGET="${target}" redoxer build --target "${target}" --profile "${build_profile}" --package "$package_name" -Zbuild-std=std,core,alloc,panic_abort,compiler_builtins,proc_macro
 	if [ $? -ne 0 ]; then
 		echo "Failed to build target $target."
 	else
@@ -93,12 +95,11 @@ case "$target" in
 		docker build ./ -t cargo-cross -f "$(dirname "$0")/Dockerfile"
 	fi
 
-	if [ $(echo "${special_cross_toolchains[@]}" | grep -v "${target}[a-zA-Z]" | grep -v "${target}-" | grep -v "[a-zA-Z]${target}" | grep -v "\-${target}" | grep -c "$target") -gt 0 ]; then
+	if [ $(echo "${special_cross_toolchains[@]}" | grep -oP "((?<=^)|(?<= ))${target}(?=( |\$))" | wc -l) -gt 0 ]; then
 		if [ ! -f "$cross_toolchain_generation_script" ]; then
 			echo "Cross toolchain generation script not found."
 			exit 1
-		fi
-		if [ ! -x "$cross_toolchain_generation_script" ]; then
+		elif [ ! -x "$cross_toolchain_generation_script" ]; then
 			chmod +x "$cross_toolchain_generation_script"
 		fi
 		if [ $(image_exists "ghcr.io/cross-rs/${toolchain}-cross:local") -eq 0 ] && [ $(image_exists "ghcr.io/cross-rs/${toolchain}:latest") -eq 0 ]; then
@@ -107,9 +108,9 @@ case "$target" in
 		fi
 	fi
 
-	build_std="-Zbuild-std=std,core,alloc,panic_abort"
+	build_std="-Zbuild-std=std,core,alloc,panic_abort,compiler_builtins,proc_macro"
 	cross_build_zig=""
-	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]] && [[ "$target" != sparc* ]] && [[ "$target" != thumbv7neon* ]] && [[ "$target" != armeb* ]] && [[ "$target" != armv4t* ]]; then
+	if [[ "$target" == *gnu* ]] && [[ "$target" != *riscv64gc* ]] && [[ "$target" != sparc* ]] && [[ "$target" != thumbv7neon* ]] && [[ "$target" != armeb* ]] && [[ "$target" != armv4t* ]] && [[ "$target" != mipsel* ]]; then
 		cross_build_zig="CROSS_BUILD_ZIG=2.15 "
 	fi
 
@@ -119,8 +120,10 @@ case "$target" in
 		"${cross_build_zig}CROSS_CONTAINER_OPTS=\"-w $real_work_dir\" cross build --target ${target} --profile ${build_profile} --package $package_name $build_std"
 
 	package_out="./target/${target}/${build_out_dir}/${package_name}"
+	binary_extension=""
 	if [[ "$target" == *windows* ]]; then
 		package_out="${package_out}.exe"
+		binary_extension=".exe"
 	fi
 	if [ ! -f "$package_out" ]; then
 		echo "Failed to build target $target."
@@ -130,3 +133,4 @@ case "$target" in
 	fi
 	;;
 esac
+rm -rf ./target

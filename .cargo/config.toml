@@ -20,7 +20,7 @@ rustflags = [
   "-Zlocation-detail=none",
 ]
 
-[target.'cfg(all(target_os = "windows", any(target_arch = "i686", target_arch = "aarch64")))']
+[target.'cfg(all(target_os = "windows", not(target_env = "gnu"), any(target_arch = "i686", target_arch = "aarch64")))']
 rustflags = [
   "-Zshare-generics=y",
   "-Copt-level=3",
@@ -28,7 +28,7 @@ rustflags = [
   "-Zlocation-detail=none",
 ]
 
-[target.'cfg(all(target_os = "windows", target_arch = "x86_64"))']
+[target.'cfg(all(target_os = "windows", target_arch = "x86_64", not(target_env = "gnu")))']
 rustflags = [
   "-Ctarget-feature=+crt-static",
   "-Copt-level=3",

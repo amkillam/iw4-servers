@@ -21,6 +21,7 @@ scripts_dir="$(dirname "$0")"
 
 original_dir="$(pwd)"
 if [ ! -d ./target/cross ]; then
+	mkdir -p ./target
 	git clone https://github.com/cross-rs/cross --recurse-submodules target/cross
 	cd target/cross
 else

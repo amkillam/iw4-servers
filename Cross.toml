@@ -12,3 +12,5 @@ image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
 image = "ghcr.io/cross-rs/thumbv7neon-unknown-linux-musleabihf-cross:local"
 [target.x86_64-apple-darwin]
 image = "ghcr.io/cross-rs/x86_64-apple-darwin-cross:local"
+[target.aarch64-unknown-linux-musl]
+image = "ghcr.io/cross-rs/aarch64-unknown-linux-musl-cross:local"
