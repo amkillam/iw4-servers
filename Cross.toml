@@ -82,3 +82,58 @@ pre-build = [
   "apt-get update",
   "apt-get install -y ca-certificates clang gcc lld",
 ]
+[target.aarch64-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:aarch64-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.aarch64_be-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:aarch64_be-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.armv6-unknown-netbsd-eabihf]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:armv6-unknown-netbsd-eabihf-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+[target.armv7-unknown-netbsd-eabihf]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:armv7-unknown-netbsd-eabihf-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.i586-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:i586-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.i686-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:i686-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.mipsel-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:mipsel-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.powerpc-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.sparc64-unknown-netbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:sparc64-unknown-netbsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]

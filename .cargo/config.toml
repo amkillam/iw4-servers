@@ -99,3 +99,53 @@ rustflags = [
   "-Clink-arg=-Wl,-O3,--discard-all,--strip-all,--sort-common,--as-needed,-z,relro,-z,now,-static",
   "-Zlocation-detail=none",
 ]
+[target.aarch64-unknown-netbsd]
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+linker = "aarch64-unknown-netbsd-clang"
+[target.aarch64_be-unknown-netbsd]
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+linker = "aarch64_be-unknown-netbsd-clang"
+[target.armv6-unknown-netbsd-eabihf]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "armv6-unknown-netbsd-eabihf-gcc"
+[target.armv7-unknown-netbsd-eabihf]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "armv7-unknown-netbsd-eabihf-gcc"
+[target.i586-unknown-netbsd]
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+linker = "i586-unknown-netbsd-clang"
+[target.i686-unknown-netbsd]
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+linker = "i686-unknown-netbsd-clang"
+[target.mipsel-unknown-netbsd]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "mipsel-unknown-netbsd-gcc"
+[target.powerpc-unknown-netbsd]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "powerpc-unknown-netbsd-gcc"
+[target.sparc64-unknown-netbsd]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "sparc64-unknown-netbsd-gcc"
+[target.powerpc64-unknown-netbsd]
+rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
+linker = "powerpc64-unknown-netbsd-gcc"
