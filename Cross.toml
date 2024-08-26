@@ -8,9 +8,77 @@ image = "ghcr.io/cross-rs/aarch64_be-unknown-linux-gnu-cross:local"
 image = "ghcr.io/cross-rs/i686-apple-darwin-cross:local"
 [target.s390x-unknown-linux-gnu]
 image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y gcc-s390x-linux-gnu",
+  "ln -sf /usr/bin/s390x-linux-gnu-gcc /usr/bin/s390x-ibm-linux-gnu-gcc",
+]
 [target.thumbv7neon-unknown-linux-musleabihf]
 image = "ghcr.io/cross-rs/thumbv7neon-unknown-linux-musleabihf-cross:local"
 [target.x86_64-apple-darwin]
 image = "ghcr.io/cross-rs/x86_64-apple-darwin-cross:local"
 [target.aarch64-unknown-linux-musl]
 image = "ghcr.io/cross-rs/aarch64-unknown-linux-musl-cross:local"
+[target.x86_64-pc-windows-gnullvm]
+image = "ghcr.io/cross-rs/x86_64-pc-windows-gnu:main"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y mingw-w64 wget xz-utils tar rsync",
+  "wget https://github.com/mstorsjo/llvm-mingw/releases/download/nightly/llvm-mingw-nightly-ucrt-ubuntu-20.04-x86_64.tar.xz",
+  "tar xvf llvm-mingw-nightly-ucrt-ubuntu-20.04-x86_64.tar.xz",
+  "rsync -av --info=progress2 ./llvm-mingw-nightly-ucrt-ubuntu-20.04-x86_64/ /usr/ || true",                                  #rsync seems to fail consistently on overwriting certain clang files, but this is fine - we don't need to overwrite them
+]
+[target.x86_64-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:x86_64-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+
+[target.aarch64-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:aarch64-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+[target.i686-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:i686-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+[target.sparc64-unknown-openbsd]
+pre-build = [
+  "apt-get update",
+  "apt-get install -y curl ca-certificates gcc lsb-release wget software-properties-common gnupg",
+  "curl https://apt.llvm.org/llvm.sh -sSfL | bash -s -- 18",
+  "apt-get install -y clang-18 lld-18",
+  "ln -sf /usr/bin/clang-18 /usr/bin/clang",
+  "ln -sf /usr/bin/clang++-18 /usr/bin/clang++",
+  "ln -sf /usr/bin/lld-18 /usr/bin/lld",
+]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:sparc64-unknown-openbsd7.5-dev"
+
+[target.riscv64gc-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:riscv64gc-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+[target.powerpc-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+
+[target.powerpc64-unknown-openbsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc64-unknown-openbsd7.5-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]

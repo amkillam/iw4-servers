@@ -1,6 +1,69 @@
 [build]
 rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
 
+[target.x86_64-unknown-openbsd]
+linker = "x86_64-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.aarch64-unknown-openbsd]
+linker = "aarch64-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.i686-unknown-openbsd]
+linker = "i686-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.sparc64-unknown-openbsd]
+linker = "sparc64-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.riscv64gc-unknown-openbsd]
+linker = "riscv64gc-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.powerpc-unknown-openbsd]
+linker = "powerpc-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
+[target.powerpc64-unknown-openbsd]
+linker = "powerpc64-unknown-openbsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+
 [target.'cfg(target_os = "macos")']
 rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
 
@@ -12,7 +75,7 @@ rustflags = [
   "-Zlocation-detail=none",
 ]
 
-[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64", target_arch = "i586", target_arch = "mips", target_arch = "mips64"), target_family = "unix", not(target_os = "macos")))']
+[target.'cfg(all(any(target_arch = "i686", target_arch = "x86_64", target_arch = "i586", target_arch = "mips", target_arch = "mips64"), target_family = "unix", not(target_os = "openbsd"), not(target_os = "macos")))']
 rustflags = [
   "-Zshare-generics=y",
   "-Copt-level=3",
