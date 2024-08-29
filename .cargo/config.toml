@@ -149,3 +149,60 @@ linker = "sparc64-unknown-netbsd-gcc"
 [target.powerpc64-unknown-netbsd]
 rustflags = ["-Copt-level=3", "-Zshare-generics=y", "-Zlocation-detail=none"]
 linker = "powerpc64-unknown-netbsd-gcc"
+
+[target.aarch64-unknown-freebsd]
+linker = "aarch64-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.i686-unknown-freebsd]
+linker = "i686-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.powerpc-unknown-freebsd]
+linker = "powerpc-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.powerpc64-unknown-freebsd]
+linker = "powerpc64-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.powerpc64le-unknown-freebsd]
+linker = "powerpc64le-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.riscv64gc-unknown-freebsd]
+linker = "riscv64gc-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]
+[target.x86_64-unknown-freebsd]
+linker = "x86_64-unknown-freebsd-clang"
+rustflags = [
+  "-Copt-level=3",
+  "-Zshare-generics=y",
+  "-Zlocation-detail=none",
+  "-Clink-arg=-fuse-ld=lld",
+]

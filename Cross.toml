@@ -137,3 +137,50 @@ pre-build = [
   "apt-get update",
   "apt-get install -y ca-certificates clang gcc lld",
 ]
+[target.aarch64-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:aarch64-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.i686-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:i686-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.powerpc-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.powerpc64-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc64-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.powerpc64le-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:powerpc64le-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
+[target.riscv64gc-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:riscv64gc-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y curl ca-certificates gcc lsb-release wget software-properties-common gnupg",
+  "curl https://apt.llvm.org/llvm.sh -sSfL | bash -s -- 18",
+  "apt-get install -y clang-18 lld-18",
+  "ln -sf /usr/bin/clang-18 /usr/bin/clang",
+  "ln -sf /usr/bin/clang++-18 /usr/bin/clang++",
+  "ln -sf /usr/bin/lld-18 /usr/bin/lld",
+]
+[target.x86_64-unknown-freebsd]
+image = "ghcr.io/taiki-e/rust-cross-toolchain:x86_64-unknown-freebsd-dev"
+pre-build = [
+  "apt-get update",
+  "apt-get install -y ca-certificates clang gcc lld",
+]
